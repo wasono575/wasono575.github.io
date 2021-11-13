@@ -1,0 +1,85 @@
+/*ページの骨格となる部分*/
+#bg{
+width:  100%;
+margin:  0px;
+background-color:  #fff;
+}
+
+#container{
+width:  calc(100% - 70px);
+margin-top:  20px;
+margin-left:  35px;
+margin-right:  35px;
+}
+
+#header{
+margin-left:  35px;
+margin-right:  35px;
+width:  100%;
+}
+
+#main{
+float:  left;
+width:  calc(75% - 112px);//marginで10px, paddingで100px, borderで2px。合計22px 
+margin:  5px;
+padding-right:  50px;
+padding-left:  50px;
+background-color:  #fff;
+border:  solid 1px #eee;
+}
+
+.side{
+float:  left;
+width:  calc(25% - 22px);
+margin-left:  5px;
+margin-bottom:  5px;
+padding-top:  3px;
+padding-left:  5px;
+background-color:  #fff;
+border:  solid 1px #eee;
+}
+
+#footer{
+clear:  left;
+width:  100vw;
+padding:  50px;
+padding-left:  80px;
+padding-right:  80px;
+background-color:  #ccc;
+color:  #111;
+}
+
+
+/*内部*/
+
+.title{
+background-color:#46e;
+border-radius:  5px;
+padding: 5px;
+font-size:1.4em;
+font-size:1.8em;
+color:#fff;
+}
+
+h3.caption{
+border-left: thick solid #349;
+background-color:#cef;
+border-bottom: solid 2px #abe;
+border-right: solid 1px #abe;
+padding: 5px;
+margin-left:15px;
+font-size:1.4em;
+}
+
+.passage{
+padding-left: 30px;
+padding-bottom:10px;
+}
+
+.h_list_elem{
+list-style:  none;
+display:  inline-block;
+margin:  0;
+margin-right:20px;
+padding:  0;
+}
