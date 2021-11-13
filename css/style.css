@@ -41,7 +41,7 @@ border:  solid 1px #eee;
 
 #footer{
 clear:  left;
-width:  100vw;
+width:  calc(100vw - 160px);
 padding:  50px;
 padding-left:  80px;
 padding-right:  80px;
