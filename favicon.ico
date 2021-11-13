@@ -1,0 +1,8 @@
+<?php 
+$add_path="../";
+require_once "../file/common/index.php";
+require_once "../file/common/index2.php";
+
+header('Content-Type: image/vnd.microsoft.icon');
+readfile("./img/favicon.ico");
+ ?>
