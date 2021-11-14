@@ -3,6 +3,8 @@
 width:  100%;
 margin:  0px;
 background-color:  #fff;
+display:  flex;
+flex-direction:  column;
 }
 
 #container{
@@ -42,9 +44,8 @@ border:  solid 1px #eee;
 #footer{
 clear:  left;
 width:  calc(100% - 160px);
-padding:  50px;
-padding-left:  80px;
-padding-right:  80px;
+padding:  50px 80px 50px 80px;
+margin-top: auto;
 background-color:  #ccc;
 color:  #111;
 }
