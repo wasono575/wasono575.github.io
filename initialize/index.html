@@ -1,7 +1,8 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-   <title>初期化</title>
+   <title>しつこい初期化の確認</title>
+   <meta name="description" content="初期化するとき、しつこく確認されることってあるよね。というわけで作ってみました。">
    <meta name="viewport" content="width=device-width,initial-scale=1">
    <style type="text/css">
       .fence{
@@ -97,7 +98,7 @@
       }
    </style>
 </head>
-<body>
+<body onLoad="title();">
 <div id="phase1">
    <button onClick="confirm_1();" id="initialize_1">初期化</button>
    <div id="load_img" style="display:none;">
@@ -183,6 +184,10 @@ var se = document.getElementById("se");
 var phase5_click = 0;
 var phase7_time = 0;
 
+function title(){
+document.title = "初期化";
+}
+   
 function confirm_1(){
    let warn_word=["初期化しますか？","本当にしますか？","押し間違いではないですか？\nこの操作は戻すことができません。\n本当に実行しますか？"];
    for(let i=0; i<warn_word.length; i++){
