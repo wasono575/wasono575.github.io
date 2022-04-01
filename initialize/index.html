@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+   <title>確認画面</title>
+   <meta name="viewport" content="width=device-width,initial-scale=1">
+   <style type="text/css">
+      .fence{
+         border:solid 1px;
+         padding:4px 20px 20px;
+      }
+
+      .fence_modal{
+         border-radius:10px;
+         margin:0px 25vw;
+         background:black;
+         margin 0 auto;
+         color:white;
+         text-align:center;
+         transform: translateY(25vh);
+      }
+
+      .modal_back{
+         left:0;
+         top:0;
+         width:100%;
+         height:100%;
+         position:fixed;
+         background-color: rgba(0,0,0,.5);
+         opacity: 0;
+      }
+
+      @keyframes modal_open {
+        0% {
+          opacity: 0;
+          display:none;
+        }
+      
+        100% {
+          opacity: 1;
+        }
+      }
+
+      .modal_appear{
+         animation: modal_open 0.5s linear 0s;
+         animation-fill-mode: forwards;
+      }
+
+      .button1{
+         border:solid 1px;
+         padding:8px 20px 8px;
+         border-radius:10px;
+         box-shadow 0 20px 20px 20px rgba(0, 0, 0, 0.5);
+      }
+
+      .button_safe{
+         background:#2b9e49;
+         color:white;
+         border-color:black;
+      }
+
+      .button_safe:hover{
+         background:#37bf5b;
+      }
+
+      .button_safe:active{
+         background:#1f7836;
+         color:#ddd;
+      }
+
+      .button_danger_f{
+         background:#ae2b2b;
+         color:white;
+         border-color:black;
+      }
+
+      .button_danger_f:hover{
+         opacity: 0;
+      }
+
+      .button_danger_f:active{
+         opacity: 0;
+      }
+
+      .button_danger{
+         background:#ae2b2b;
+         color:white;
+         border-color:black;
+      }
+
+      .button_danger:hover{
+         background:#de3d37;
+      }
+
+      .button_danger:active{
+         background:#8a221e;
+         color:#ddd;
+      }
+   </style>
+</head>
+<body>
+<div id="phase1">
+   <button onClick="confirm_1();" id="initialize_1">初期化</button>
+   <div id="load_img" style="display:none;">
+   <img src="./loading.gif" width="50" height="50">
+   </div>
+</div>
+
+
+<div id="phase2" style="display:none;">
+   <div class="fence">
+   <h2>初期化の準備段階に入りました。</h2>
+   <p>まだ初期化は行っていません。本当に行いますか？</p>
+   <input type="checkbox" id="check1"><label for="check1">&emsp;初期化を行います。</label><br>
+   <button onClick="confirm_2_3();" id="initialize_2">初期化</button>
+   </div>
+</div>
+
+<div id="phase3" style="display:none; background:#f0e478; width:100%; height:100%;">
+   <div class="fence">
+   <h2>念のため、もう一度確かめてください。</h2>
+   <p>誤って初期化していませんか？ なぜ初期化するか、ちゃんと分かっていますか？<br>
+   初期化は、一度行うと<b style="background:#e66763; font-size:30px;">二度とやり直しができません</b></p>
+   <input type="checkbox" id="check2"><label for="check2">&emsp;目的は決まっていて、初期化する必要があります。</label><br>
+   <input type="checkbox" id="check3"><label for="check3">&emsp;初期化をすると戻せなくなることを分かっています。</label><br>
+   <input type="checkbox" id="check4"><label for="check4">&emsp;これらに誤りがないことを確認しました。</label><br>
+   <button onClick="confirm_3_2();" id="initialize_3">初期化</button>
+   </div>
+</div>
+
+<div id="phase4" style="display:none;">
+   <h2>いや、やっぱり間違いですか？</h2>
+   <span style="font-size:15px">あなたは、今まで警告文さえ読まずにチェックやOKをし続けたのかもしれません。<br>
+   初期化をする旨があるのかをもう一度確認するため、以下の数字を入力し、指示に従ってください。</span>
+   <hr>
+   <span id="check_num_dsp" style="border:solid 1px; padding:3px; background:white; user-select: none;" unselectable="on"></span><br>
+   <input type="number" id="check_num_1_ans">
+   
+   <button onClick="confirm_4_2();" id="initialize_4">初期化</button>
+   <span style="position:absolute; bottom:5px; right:5px;" onClick="confirm_4_check();">
+   <input type="checkbox" id="check_4_hidden" style="display:none;">ここクリックしてください</span>
+</div>
+
+<div id="phase5" style="display:none; border:solid 3px; padding:4px 20px 20px; background:#ffff00">
+   <h2>初期化の"意味"まで、分かっていますか？</h2>
+   <p>初期化とは、データを<span style="background:#f24030;">完全に消去</span>し、初期状態に戻すことです。</p>
+   <span style="font-size:35px; background:#f14030;">完全に消去します。<br>二度と戻せません。</span><br>
+   <div id="phase5_select" style="margin:5px;">
+      <button class="button1 button_safe" onClick="confirm_5_2();">初期化をやめる</button>
+      <button class="button1 button_danger_f" onClick="confirm_5_3();">初期化をする</button>
+      <button class="button1 button_danger" id="masic1" style="display:none;" onClick="confirm_5_4();">初期化をする</button>
+   </div>
+</div>
+
+   <div id="phase6" class="modal_back" style="display:none;">
+      <div class="fence fence_modal">
+         <div id="phase6_content"> 
+            <h2>最終確認です。</h2>
+            <p>何度も警告しましたので、危険性は理解しているかと思います。<br>初期化しますか？</p>
+            <button class="button1 button_safe" onClick="confirm_6_3();">初期化をする</button>
+            <button class="button1 button_danger" onClick="confirm_6_2();">初期化をやめる</button>
+         </div>
+         <div id="phase7" style="display:none;">
+            <h2>初期化中</h2>
+            <div class="fence" style="width:80%; border-radius:10px; background:#fff; margin:20px; color:black;">
+               <label for="init_prog">初期化の進行：</label>
+               <progress id="init_prog" value="0" max="100"></progress>
+               <span id="phase_7_percent">0%</span>
+            </div>
+
+         </div>
+      </div>
+   </div>
+
+<audio id="se"></audio>
+
+
+<script type="text/javascript">
+var level = 0;
+var load_img = document.getElementById("load_img");
+var phase = [document.getElementById("phase1")];
+var se = document.getElementById("se");
+
+var phase5_click = 0;
+var phase7_time = 0;
+
+function confirm_1(){
+   let warn_word=["初期化しますか？","本当にしますか？","押し間違いではないですか？\nこの操作は戻すことができません。\n本当に実行しますか？"];
+   for(let i=0; i<warn_word.length; i++){
+      if(confirm(warn_word[level])){
+          level++;
+          if(warn_word.length <= level){
+             document.getElementById("initialize_1").disabled = true;
+             confirm_2_1();
+          } 
+      }else{
+         alert("初期化がキャンセルされました。");
+         level = 0;
+         break;
+      }
+   }
+}
+
+
+
+function confirm_2_1(){
+   load_img.style.display = "block";
+   setTimeout(confirm_2_2, 3000);
+}
+
+function confirm_2_2(){
+   load_img.style.display = "none";
+   phase[0].style.display = "none";
+   phase.push(document.getElementById("phase2"));
+   phase[1].style.display = "block";
+}
+
+function confirm_2_3(){
+   let check1 = document.getElementById("check1");
+      if(check1.checked){
+         level++;
+         document.getElementById("initialize_2").disabled = true;
+         alert("それでは、実行に移ります。");
+         setTimeout(confirm_3_1, 2500);
+      }else{
+         alert("確認のチェックを入れてください。");
+      }
+}
+
+function confirm_3_1(){
+   phase[1].style.display = "none";
+   phase.push(document.getElementById("phase3"));
+   phase[2].style.display = "block";
+}
+
+function confirm_3_2(){
+   let check2 = document.getElementById("check2");
+   let check3 = document.getElementById("check3");
+   let check4 = document.getElementById("check4");
+
+      if(check2.checked && check3.checked && check4.checked){
+         level++;
+            if(confirm("やっぱり初期化をやめておきますか？")){
+               alert("初期化をキャンセルしました");
+               location.reload();
+            }else{
+               document.getElementById("initialize_3").disabled = true;
+               alert("初期化する意思を確認しました。\nそれでは行います。");
+            }
+         setTimeout(confirm_4_1, 4000);
+      }else{
+         alert("十分な確認を行ったうえで、チェックをしてください。");
+      }
+}
+
+function confirm_4_1(){
+   se.src="./error1.mp3";
+   se.play();
+   phase[2].style.display = "none";
+   phase.push(document.getElementById("phase4"));
+   phase[3].style.display = "block";
+   var check_num_dsp = document.getElementById("check_num_dsp");
+   var check_num_1 = Math.floor(Math.random()*10000000);
+   check_num_dsp.innerHTML = check_num_1;
+   document.body.style.background = "#e05653";
+}
+
+function confirm_4_check(){
+   document.getElementById("check_4_hidden").checked = true;
+   alert("クリックしました。");
+}
+
+function confirm_4_2(){
+   let check_num_ans = document.getElementById("check_num_1_ans");
+      if(parseInt(check_num_ans.value) == check_num_dsp.innerHTML){
+         if(document.getElementById("check_4_hidden").checked){
+            level++;
+            document.getElementById("initialize_4").disabled = true;
+            alert("了解いたしました。");
+            setTimeout(confirm_5_1, 4500);
+         }else{
+            alert("ちゃんと指示に従ってください。\n念のため、最初からやり直してください。");
+            location.reload();
+         }
+      }else{
+         alert("数字が違います。");
+      }
+}
+
+function confirm_5_1(){
+   level++;
+   phase[3].style.display = "none";
+   phase.push(document.getElementById("phase5"));
+   phase[4].style.display = "block";
+   document.body.style.background = "#f15050";
+}
+
+function confirm_5_2(){
+   if(phase5_click >=21){
+      alert("初期化せんのかい。\nまあ別にいいけど。");
+      location.reload();
+   }else{
+      alert("初期化をキャンセルしました。");
+      location.reload();
+   }
+}
+
+function confirm_5_3(){
+   phase5_click++;
+   
+   switch(phase5_click){
+      case 1:
+         alert("？");
+         break;
+
+      case 2:
+         alert("？？");
+         break;
+
+      case 3:
+         alert("？？？");
+         break;
+
+      case 4:
+         alert("はい？");
+         break;
+
+      case 5:
+         alert("何ですか？");
+         break;
+
+      case 6:
+         alert("何でしょう？");
+         break;
+
+
+
+      case 7:
+         alert("どうしたの？");
+         break;
+
+      case 8:
+         alert("もう8回も押してますよ。");
+         break;
+
+      case 9:
+         alert("「初期化する」を押そうとしているのですか？");
+         break;
+
+      case 10:
+         alert("押しても消えるので押せませんけど？");
+         break;
+
+      case 11:
+         alert("初期化したいのですか？");
+         break;
+
+      case 12:
+         alert("本当なのですか？");
+         break;
+
+      case 13:
+         alert("そこまでして？");
+         break;
+
+      case 14:
+      case 15:
+      case 16:
+      case 17:
+         alert("...");
+         break;
+
+      case 18:
+         alert("...はい");
+         break;
+
+      case 19:
+         alert("初期化...したいのですね。");
+         break;
+
+      case 20:
+         alert("じゃあ、ボタンを召喚しましょうか？");
+         document.getElementById("masic1").style.display = "inline";
+         break;
+
+      default:
+         alert("さあ、初期化しなさい。");
+         break;
+   }
+}
+
+function confirm_5_4(){
+   setTimeout(confirm_6_1, 1000);
+}
+
+
+function confirm_6_1(){
+   level++;
+   phase.push(document.getElementById("phase6"));
+   phase[5].style.display = "block";
+   phase[5].classList.add('modal_appear');
+console.log("s");
+}
+
+function confirm_6_2(){
+   alert("初期化をキャンセルしました。");
+   location.reload();
+}
+
+function confirm_6_3(){
+   setTimeout(confirm_7_1, 1000);
+}
+
+function confirm_7_1(){
+   phase.push(document.getElementById("phase7"));
+   phase[6].style.display = "block";
+   document.getElementById("phase6_content").style.display = "none";
+   setInterval(confirm_7_prog, 1000);
+}
+
+function confirm_7_prog(){
+let prog = document.getElementById("init_prog").value;
+let balance, b1, b2;
+   if(prog >= 80){
+      balance = Math.floor( Math.random() * -59 ) -20;
+   }else{
+      b1 = Math.floor( Math.random() * 6) + 1;
+      b2 = Math.floor( Math.random() * 10) + 10;
+      balance = Math.floor( Math.random() * (b2 + 1 - b1) ) + b1;
+   }
+prog = parseInt(prog) + parseInt(balance)
+document.getElementById("init_prog").value = prog;
+document.getElementById("phase_7_percent").innerHTML = prog + "%";
+}
+</script>
+</body>
+</html>
